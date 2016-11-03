@@ -1,0 +1,6 @@
+eLab:
+  plugins:
+    TidyPics: https://github.com/Tidypics/Tidypics.git
+mysql:
+  server:
+    root_password: 'testpass'
