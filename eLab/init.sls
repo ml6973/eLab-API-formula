@@ -73,5 +73,5 @@ execute API:
 #    - source: salt://eLab-portal-formula/files/php.ini
 #    - template: jinja
 
-#service apache2 restart:
-#  cmd.run
+service apache2 restart:
+  cmd.run
