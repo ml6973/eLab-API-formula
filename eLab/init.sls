@@ -33,8 +33,6 @@ MySQL-python:
 apache2:
   service.running:
     - restart: True
-    - watch:
-      - file: /etc/php5/apache2/php.ini
 
 {% if salt['grains.get']('mysql_password_updated') != True %}
 set mysql password:
