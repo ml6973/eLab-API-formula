@@ -15,7 +15,6 @@ eLab_packages:
       - tmux 
       - python-pip
       - python-dev
-      - python-django
       - libmysqlclient-dev
       - mysql-server
 
@@ -23,6 +22,22 @@ eLab_packages:
 # Once pip is installed get the pip related pkgs 
 #
 MySQL-python:
+  pip.installed:
+    - require:
+      - pkg: eLab_packages
+
+django:
+  pip.installed:
+    - name: django >= 1.10
+    - require:
+      - pkg: eLab_packages
+
+djangorestframework:
+  pip.installed:
+    - require:
+      - pkg: eLab_packages
+
+passlib:  
   pip.installed:
     - require:
       - pkg: eLab_packages
@@ -57,11 +72,12 @@ clone repo:
 
 /opt/eLab-API-Source/elabapi/settings.py:
   file.managed:
+    - template: jinja
     - source: salt://eLab-API-formula/files/api_settings.py
 
 execute API:
   cmd.run:
-    - name: python manage.py runserver:0.0.0.0:12345 &
+    - name: tmux new -d -s API_SERVER 'python manage.py runserver 0.0.0.0:12345'
     - cwd: /opt/eLab-API-Source
 
 #/etc/apache2/sites-available/000-default.conf:

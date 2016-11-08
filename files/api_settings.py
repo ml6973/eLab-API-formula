@@ -25,7 +25,7 @@ SECRET_KEY = 'ih3d*-!8l8h7qk%9g+d74ucd(so&n*kzirwf*+o(yu0q6i%txe'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['{{  grains['public_ip'] }}']
 
 # Application definition
 
