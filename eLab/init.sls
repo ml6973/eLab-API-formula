@@ -27,6 +27,12 @@ MySQL-python:
     - require:
       - pkg: eLab_packages
 
+djangorestframework:
+  pip.installed:
+    - require:
+      - pkg: eLab_packages
+
+
 #
 # Restart apache2 and make sure it is running
 #
