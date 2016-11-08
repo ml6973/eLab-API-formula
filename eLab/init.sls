@@ -43,7 +43,7 @@ set mysql password:
     - value: True
 {% endif %}
 
-mysql -uroot -p{{ mysql_root_password }} < /root/eLab_backup.sql:
+mysql -uroot -p{{ mysql_root_password }}:
   cmd.run
 
 #
