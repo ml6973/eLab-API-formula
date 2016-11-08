@@ -26,6 +26,7 @@ MySQL-python:
     - require:
       - pkg: eLab_packages
 
+<<<<<<< HEAD
 django:
   pip.installed:
     - name: django >= 1.10
