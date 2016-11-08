@@ -27,11 +27,6 @@ MySQL-python:
     - require:
       - pkg: eLab_packages
 
-requests:
-  pip.installed:
-    - require:
-      - pkg: eLab_packages
-
 #
 # Restart apache2 and make sure it is running
 #
@@ -40,24 +35,6 @@ apache2:
     - restart: True
     - watch:
       - file: /etc/php5/apache2/php.ini
-
-#
-# Enable mod_rewrite for eLab
-#
-Apache mod_rewrite:
-  apache_module.enable:
-    - name: rewrite
-
-#
-# Copy sql backup template, set mysql password and update the database
-#
-/root/eLab_backup.sql:
-  file.managed:
-    - source: salt://eLab-API-formula/files/elab_ss.sql
-    - user: root
-    - group: root
-    - mode: 644
-    - template: jinja
 
 {% if salt['grains.get']('mysql_password_updated') != True %}
 set mysql password:
@@ -76,43 +53,27 @@ mysql -uroot -p{{ mysql_root_password }} < /root/eLab_backup.sql:
 #
 clone repo:
   git.latest:
-    - name: https://github.com/ml6973/eLab-GUI-web-portal.git 
-    - target: /opt/eLab-GUI-web-portal
+    - name: https://github.com/ml6973/eLab-API-Source.git 
+    - target: /opt/eLab-API-Source
     - rev: master
 
-/opt/eLab-data:
-  file.directory:
-    - user: www-data
-    - group: www-data
-    - makedirs: True
+/opt/eLab-API-Source/elabapi/settings.py:
+  file.managed:
+    - source: salt://eLab-API-formula/files/api_settings.py
 
-/var/www/html/eLab-GUI-web-portal:
-  file.directory:
-    - makedirs: True
-
-copy web content:
+execute API:
   cmd.run:
-    - name: cp -rf /opt/eLab-GUI-web-portal/WebContent/. /var/www/html/eLab-GUI-web-portal/
-  file.directory:
-    - name: /var/www/html/eLab-GUI-web-portal
-    - user: www-data
-    - group: www-data
-    - recurse:
-      - user
-      - group
+    - name: python manage.py runserver:0.0.0.0:12345 &
+    - cwd: /opt/eLab-API-Source
 
-/var/www/myConfig.ini:
-  file.managed:
-    - source: salt://eLab-portal-formula/files/myConfig.ini
+#/etc/apache2/sites-available/000-default.conf:
+#  file.managed:
+#    - source: salt://eLab-portal-formula/files/000-default.conf
 
-/etc/apache2/sites-available/000-default.conf:
-  file.managed:
-    - source: salt://eLab-portal-formula/files/000-default.conf
+#/etc/php5/apache2/php.ini:
+#  file.managed:
+#    - source: salt://eLab-portal-formula/files/php.ini
+#    - template: jinja
 
-/etc/php5/apache2/php.ini:
-  file.managed:
-    - source: salt://eLab-portal-formula/files/php.ini
-    - template: jinja
-
-service apache2 restart:
-  cmd.run
+#service apache2 restart:
+#  cmd.run
