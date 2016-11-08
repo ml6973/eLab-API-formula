@@ -67,7 +67,7 @@ clone repo:
 
 execute API:
   cmd.run:
-    - name: python manage.py runserver:0.0.0.0:12345 &
+    - name: python manage.py runserver 0.0.0.0:12345 &
     - cwd: /opt/eLab-API-Source
 
 #/etc/apache2/sites-available/000-default.conf:
