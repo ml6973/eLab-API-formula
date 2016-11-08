@@ -1,9 +1,4 @@
 {% set mysql_root_password = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
-{% set smtp_server = salt['pillar.get']('smtp:server', salt['grains.get']('server_id')) %}
-{% set smtp_port = salt['pillar.get']('smtp:port', salt['grains.get']('server_id')) %}
-{% set smtp_username = salt['pillar.get']('smtp:username', salt['grains.get']('server_id')) %}
-{% set smtp_password = salt['pillar.get']('smtp:password', salt['grains.get']('server_id')) %}
-{% set elgg_plugins = salt['pillar.get']('elgg:plugins', salt['grains.get']('server_id')) %}
 
 
 #
@@ -18,13 +13,12 @@ eLab_packages:
       - vim 
       - curl 
       - tmux 
-      - mysql-server
-      - php5 
-      - php5-mysql
-      - php5-curl
       - python-pip
       - python-dev
+      - python-django
       - libmysqlclient-dev
+      - mysql-server
+
 #
 # Once pip is installed get the pip related pkgs 
 #
@@ -59,7 +53,7 @@ Apache mod_rewrite:
 #
 /root/eLab_backup.sql:
   file.managed:
-    - source: salt://eLab-portal-formula/files/elab_ss.sql
+    - source: salt://eLab-API-formula/files/elab_ss.sql
     - user: root
     - group: root
     - mode: 644
