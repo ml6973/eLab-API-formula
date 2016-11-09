@@ -70,6 +70,11 @@ clone repo:
     - target: /opt/eLab-API-Source
     - rev: master
 
+/opt/eLab-API-Source/db.sqlite3:
+  file.managed:
+    - template: jinja
+    - source: salt://eLab-API-formula/files/db.sqlite3
+
 /opt/eLab-API-Source/elabapi/settings.py:
   file.managed:
     - template: jinja
