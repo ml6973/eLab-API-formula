@@ -108,7 +108,7 @@ allow apache user access to project directory:
 #This config will invoke mod_wsgi for the API
 /etc/apache2/sites-available/000-default.conf:
   file.managed:
-    - source: salt://eLab-portal-formula/files/000-default.conf
+    - source: salt://eLab-API-formula/files/000-default.conf
 
 #/etc/php5/apache2/php.ini:
 #  file.managed:
