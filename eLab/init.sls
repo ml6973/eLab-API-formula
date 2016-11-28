@@ -93,7 +93,7 @@ execute API non mod_wsgi:
 
 collect API static for mod_wsgi:
   cmd.run:
-    - name: python manage.py collectstatic
+    - name: echo 'yes' | python manage.py collectstatic
     - cwd: /opt/eLab-API-Source
 
 allow apache user access to db file:
