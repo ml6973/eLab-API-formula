@@ -8,7 +8,8 @@ eLab_packages:
   pkg:
     - installed
     - pkgs:
-      - apache2 
+      - apache2
+      - libapache2-mod-wsgi 
       - git 
       - vim 
       - curl 
@@ -38,6 +39,11 @@ djangorestframework:
       - pkg: eLab_packages
 
 passlib:  
+  pip.installed:
+    - require:
+      - pkg: eLab_packages
+
+boto3:
   pip.installed:
     - require:
       - pkg: eLab_packages
@@ -80,14 +86,29 @@ clone repo:
     - template: jinja
     - source: salt://eLab-API-formula/files/api_settings.py
 
-execute API:
+execute API non mod_wsgi:
   cmd.run:
     - name: tmux new -d -s API_SERVER 'python manage.py runserver 0.0.0.0:12345'
     - cwd: /opt/eLab-API-Source
 
-#/etc/apache2/sites-available/000-default.conf:
-#  file.managed:
-#    - source: salt://eLab-portal-formula/files/000-default.conf
+collect API static for mod_wsgi:
+  cmd.run:
+    - name: python manage.py collectstatic
+    - cwd: /opt/eLab-API-Source
+
+allow apache user access to db file:
+  cmd.run:
+    - name: chown :www-data db.sqlite3
+    - cwd: /opt/eLab-API-Source
+
+allow apache user access to project directory:
+  cmd.run:
+    - name: chown :www-data /opt/eLab-API-Source 
+
+#This config will invoke mod_wsgi for the API
+/etc/apache2/sites-available/000-default.conf:
+  file.managed:
+    - source: salt://eLab-portal-formula/files/000-default.conf
 
 #/etc/php5/apache2/php.ini:
 #  file.managed:
