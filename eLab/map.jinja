@@ -1,0 +1,9 @@
+{% set eLab_API = salt['grains.filter_by']({
+    'default': {
+        'pkgs': ['apache2', 'git', 'vim', 'curl', 'tmux', 'mysql-server', 'sendmail', 'php5', 'php5-mysql'],
+        'server_name': None,
+        'public_ip': '127.0.0.1',
+        'REPO': 'https://github.com/ml6973/eLab-API-Source.git',
+        'BRANCH': 'master'
+    },
+}, merge=salt['grains.get']('eLab_API')) %}

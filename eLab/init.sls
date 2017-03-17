@@ -1,3 +1,5 @@
+{% from "eLab-API-formula/eLab/map.jinja" import eLab_API with context %}
+
 {% set mysql_root_password = salt['pillar.get']('mysql:server:root_password', salt['grains.get']('server_id')) %}
 
 
