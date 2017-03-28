@@ -13,7 +13,7 @@ data "template_file" "salt_bootstrap_elab_api" {
 	template = "${file("salt_bootstrap.sh")}"
 	vars {
 		roles = "eLab_API"
-		environment = "develop"
+		environment = "${var.environment}"
                 salt_master = "${var.salt_master}"
 	}
 }
