@@ -1,3 +1,4 @@
+{% from "eLab-API-formula/eLab/map.jinja" import eLab with context %}
 """
 Django settings for elabapi project.
 
@@ -20,12 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ih3d*-!8l8h7qk%9g+d74ucd(so&n*kzirwf*+o(yu0q6i%txe'
+SECRET_KEY = '{{ eLab.api.secret_key }}'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['{{  grains['public_ip'] }}']
+ALLOWED_HOSTS = ['{{  grains['eLab_API']['public_ip'] }}']
 
 # Application definition
 
@@ -76,11 +77,14 @@ WSGI_APPLICATION = 'elabapi.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '{{ eLab.mysql.server.name }}',
+        'USER': '{{ eLab.mysql.server.root_username }}',
+        'PASSWORD': '{{ eLab.mysql.server.root_password }}',
+        'HOST': '{{ eLab.mysql.server.host }}',
+        'PORT': '{{ eLab.mysql.server.port }}',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/dev/ref/settings/#auth-password-validators

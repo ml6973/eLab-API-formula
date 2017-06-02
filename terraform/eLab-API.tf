@@ -29,6 +29,16 @@ resource "openstack_compute_instance_v2" "api_node" {
         floating_ip = "${openstack_compute_floatingip_v2.floatip_1.address}"
     }
     user_data = "${data.template_file.salt_bootstrap_elab_api.rendered}"
+
+    provisioner "remote-exec" {
+        connection {
+            user = "ubuntu"
+            private_key = "${file("/var/lib/jenkins/.ssh/id_rsa")}"
+        }
+        inline = [
+            "while [ ! -f /tmp/signal ]; do sleep 2; done"
+        ]
+    }
 }
 
 output "public_ip" {

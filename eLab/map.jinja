@@ -1,9 +1,21 @@
-{% set eLab_API = salt['grains.filter_by']({
+{% set eLab = salt['grains.filter_by']({
     'default': {
-        'pkgs': ['apache2', 'git', 'vim', 'curl', 'tmux', 'mysql-server', 'sendmail', 'php5', 'php5-mysql'],
+        'pkgs': ['apache2', 'curl', 'git', 'libapache2-mod-wsgi', 'libmysqlclient-dev', 'mysql-server',
+		 'php5', 'php5-mysql', 'python-dev', 'python-pip', 'sendmail', 'tmux', 'vim'],
         'server_name': None,
-        'public_ip': '127.0.0.1',
-        'REPO': 'https://github.com/ml6973/eLab-API-Source.git',
-        'BRANCH': 'master'
+        'repo': 'https://github.com/ml6973/eLab-API-Source.git',
+        'branch': 'master',
+        'mysql': {
+            'server': {
+                'host': '127.0.0.1',
+                'port': '3306',
+                'name': 'api_db', 
+                'root_username': 'root', 
+                'root_password': 'PASSWORD'
+            }
+        },
+        'api': {
+            'secret_key': 'SECRET_KEY'
+        }
     },
-}, merge=salt['grains.get']('eLab_API')) %}
+}, merge=salt['pillar.get']('eLab')) %}
