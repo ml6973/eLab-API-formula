@@ -16,17 +16,11 @@ clone repo:
     - name: {{ grains['eLab_API']['REPO'] }} 
     - rev: {{ grains['eLab_API']['BRANCH'] }}
     - target: /opt/eLab-API-Source
-    #- name: https://github.com/ml6973/eLab-API-Source.git 
 
 /opt/eLab-API-Source/elabapi/settings.py:
   file.managed:
     - template: jinja
     - source: salt://eLab-API-formula/files/api_settings.py
-
-#execute API non mod_wsgi:
-#  cmd.run:
-#    - name: tmux new -d -s API_SERVER 'python manage.py runserver 0.0.0.0:12345'
-#    - cwd: /opt/eLab-API-Source
 
 collect API static for mod_wsgi:
   cmd.run:
@@ -41,9 +35,6 @@ allow apache user access to project directory:
 /etc/apache2/sites-available/000-default.conf:
   file.managed:
     - source: salt://eLab-API-formula/files/000-default.conf
-
-#service apache2 restart:
-#  cmd.run
 
 #
 # Restart apache2 and make sure it is running
